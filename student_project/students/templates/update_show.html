@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h4>Update Students Records</h4>
+<div class="row">
+    <div class ="col-sm-4">
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{form}}
+            <input type="submit" value="save"/>
+            <button><a href="{% url 'add_show' %}">Back to Home</a></button>
+        </form>
+        
+
+    </div>
+</div>
+{% endblock content %}

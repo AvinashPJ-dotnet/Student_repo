@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+<h4>Add Students</h4>
+<div class="row">
+    <div class ="col-sm-4">
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{form}}
+            <input type="submit" value="add">
+        
+        </form>
+
+    </div>
+</div>
+<div class="col-sm-8">
+    <h1>get student details</h1>
+    {% if std_data %}
+    <table>
+        <thead>
+            <tr>
+                <th scope="col"> Roll No</th>
+                <th scope="col"> Name</th>
+                <th scope="col"> Class</th>
+                <th scope="col"> School</th>
+                <th scope="col"> Mobile</th>
+                <th scope="col"> Address</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for st in std_data %}
+            <tr>
+                <th scope="row">{{st.roll_no}}</th>
+                <td>{{st.name}}</td>
+                <td>{{st.class_name}}</td>
+                <td>{{st.school}}</td>
+                <td>{{st.mobile}}</td>
+                <td>{{st.address}}</td>
+                <td><a href="{% url 'update_record' st.roll_no %}">Update</a> 
+                    <form action="{% url 'delete_record' st.roll_no %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" value="delete">
+                        </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <h4>no records</h4>
+    {% endif %}
+<!-- <form action="" method="GET">
+    <h1>get student details</h1>
+    {% csrf_token %}
+    {{form}}
+    <input type="submit" value="add">
+
+</form> -->
+</div>
+
+
+{% endblock content %}
