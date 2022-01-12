@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.utils.text import slugify
+
 # Create your models here.
 class StudentInfo(models.Model):
     roll_no=models.AutoField(primary_key=True)
@@ -16,3 +18,7 @@ class StudentAcademics(models.Model):
     chemistry=models.IntegerField(blank=True)
     biology=models.IntegerField(blank=True)
     english=models.IntegerField(blank=True)
+    
+    # def save(self, *args, **kwargs):
+    #     self.slug = slugify(self.roll_no)
+    #     super(StudentAcademics, self).save(*args, **kwargs)

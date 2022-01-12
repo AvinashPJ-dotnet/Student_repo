@@ -6,3 +6,7 @@ from .models import StudentInfo,StudentAcademics
 @admin.register(StudentInfo)
 class StudentAdmin(admin.ModelAdmin):
     data_list=('roll_no','name','school','class_name','mobile','addess')
+    
+@admin.register(StudentAcademics)
+class StudentAcademicsAdmin(admin.ModelAdmin):
+    data_list=('roll_no','maths','physics','chemistry','biology','english')

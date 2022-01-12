@@ -4,7 +4,8 @@ from rest_framework.views import APIView
 from django.http import JsonResponse
 from .methods import StudentCommonMethods
 from .forms import StudentRegistartion
-from .models import StudentInfo
+from .forms_adcademics import StudentAcademicsForm
+from .models import StudentAcademics, StudentInfo
 
 stud_obj=StudentCommonMethods()
 
@@ -30,16 +31,36 @@ def add_show(request):
         if request.method=='POST':
             #call form class here
             frm=StudentRegistartion(request.POST)
+            # acd_frm=StudentAcademicsForm(request.POST)
             if frm.is_valid():#check valid form
                 frm.save()
-                # after save get blank form here
+                print(frm)
+                
+                # print("studen ifo",stdinfo)
+                acd_frm=StudentAcademicsForm(request.POST)
+                if acd_frm.is_valid():
+                    stud_data=StudentInfo.objects.get(mobile=frm.data["mobile"])
+                    stdinfo=StudentInfo(roll_no=stud_data.roll_no)
+                    acd_frm.save()
+                    print(acd_frm)
+                # new_acd_frm=acd_frm.save(commit=False)# roll_no=stud_data.roll_no)
+                # new_acd_frm.roll_no=stud_data.roll_no
+                # new_acd_frm.save()
+                # ret_data=add_academic_records(request.POST,stud_data.roll_no)
+                print("form data",stud_data.roll_no)
+                # after save, get blank form here
                 frm=StudentRegistartion()
+                acd_frm=StudentAcademicsForm()
+                
             context['form']=frm
+            context['academic_form']=acd_frm
         else:
             frm=StudentRegistartion()
+            acd_frm=StudentAcademicsForm()
         # every time we get all records from the model
         stud_data=StudentInfo.objects.all()
         context['form']=frm
+        context['academic_form']=acd_frm
         context['std_data']=stud_data
         return render(request,'add_show.html',context)
     except Exception as e:
@@ -69,6 +90,19 @@ def update_records(request,roll_no):
             frm= StudentRegistartion(instance=s_data)
             
         return render(request,'update_show.html',{'form':frm})
+    except Exception as e:
+        print("exception",e)
+
+def add_academic_records(request,roll_no):
+    try:
+        
+        s_data=StudentInfo.objects.get(roll_no=roll_no)
+        frm= StudentAcademicsForm(request.POST,instance=s_data.roll_no)
+        if frm.is_valid():
+            frm.save()
+            return True
+            # frm=StudentRegistartion()    
+        # return render(request,'update_show.html',{'form':frm})
     except Exception as e:
         print("exception",e)
         
